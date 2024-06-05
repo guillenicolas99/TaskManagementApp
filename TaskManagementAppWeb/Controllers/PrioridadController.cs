@@ -1,4 +1,5 @@
-﻿using CapaInfraestructura.Context;
+﻿using CapaDominio.Entities;
+using CapaInfraestructura.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,9 +21,25 @@ namespace TaskManagementAppWeb.Controllers
             return View(listaPrioridades);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Prioridad prioridad)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Prioridades.Add(prioridad);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.errorMessage = "No se pudo agregar categoría";
+
+            return View(prioridad);
         }
     }
 }

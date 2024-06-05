@@ -14,6 +14,11 @@
                 <span asp-validation-for="Nombre" class="text-danger"></span>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Clase de prioridad</label>
+                <input class="form-control" asp-for="Clase" />
+                <span asp-validation-for="Clase" class="text-danger"></span>
+            </div>
             @if (ViewBag.errorMessage != null)
             {
                 <div class="mb-3">
