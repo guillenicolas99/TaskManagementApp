@@ -1,0 +1,82 @@
+﻿@model IEnumerable<CapaDominio.Entities.Tarea>
+
+@{
+    ViewData["Title"] = "Lista de Tareas";
+}
+
+<a asp-action="Create" class="btn btn-primary mb-3">Crear Tarea</a>
+
+<div class="table-responsive shadow">
+    <table class="table table-hover text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    Título
+                </th>
+                <th>
+                    Creado
+                </th>
+                <th>
+                    Finalizar
+                </th>
+                <th>
+                    Estado
+                </th>
+                <th>
+                    Prioridad
+                </th>
+                <th>
+                    Categoría (Departamento)
+                </th>
+                <th>
+                    Responsable
+                </th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="">
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Title
+                    </td>
+                    <td>
+                        @item.FechaCreacion
+                    </td>
+                    <td>
+                        @item.FechaEstimadaEntrega
+                    </td>
+                    <td>
+                        <span class="badge @item.Estado?.Nombre.Replace(" ", "-").ToLower()">
+                            @item.Estado?.Nombre
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge bg-@item.Prioridad?.Nombre.Replace(" ", "-").ToLower()">
+                            @item.Prioridad?.Nombre
+                        </span>
+                    </td>
+                    <td>
+                        @item.Categoria?.Nombre
+                    </td>
+                    <td>
+                        @item.UsuarioAsignado?.Nombre
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.IdTarea" class="btn btn-warning">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        <a asp-action="Details" asp-route-id="@item.IdTarea" class="btn btn-secondary">
+                            <i class="fa-solid fa-circle-info"></i>
+                        </a>
+                        <a asp-action="Delete" asp-route-id="@item.IdTarea" class="btn btn-danger">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

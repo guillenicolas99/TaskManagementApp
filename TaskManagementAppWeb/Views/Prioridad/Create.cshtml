@@ -1,0 +1,33 @@
+﻿@model CapaDominio.Entities.Prioridad
+
+@{
+    ViewData["Title"] = "Agregar Prioridad";
+}
+
+<section class="py-5">
+    <div class="card">
+        <form class="card-body" asp-action="Create" asp-controller="prioridad" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label class="form-label">Nombre de prioridad</label>
+                <input class="form-control" asp-for="Nombre" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.errorMessage != null)
+            {
+                <div class="mb-3">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>@ViewBag.errorMessage!</strong>.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Agregar</button>
+                <a class="btn btn-danger" asp-action="Index" asp-controller="Home">Inicio</a>
+            </div>
+        </form>
+    </div>
+</section>
