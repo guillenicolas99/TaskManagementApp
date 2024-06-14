@@ -1,0 +1,42 @@
+﻿@model CapaDominio.Entities.Usuario
+
+@{
+    ViewData["Title"] = "Agregar Usuario";
+}
+
+<section class="py-5">
+    <div class="card">
+        <form class="card-body" asp-action="Create" asp-controller="Categoria" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="mb-3">
+                <label class="form-label">Nombre de usuario</label>
+                <input class="form-control" asp-for="Nombre" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+
+                <label class="form-label">Correo Electrónico</label>
+                <input class="form-control" asp-for="Correo" />
+                <span asp-validation-for="Correo" class="text-danger"></span>
+
+                <label class="form-label">Contraseña</label>
+                <input type="password" class="form-control" asp-for="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            @if (ViewBag.errorMessage != null)
+            {
+                <div class="mb-3">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>@ViewBag.errorMessage!</strong>.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+
+            <div class="mb-3">
+                <button class="btn btn-primary" type="submit">Agregar</button>
+                <a class="btn btn-danger" asp-action="Index" asp-controller="Home">Inicio</a>
+            </div>
+        </form>
+    </div>
+</section>
+

@@ -37,7 +37,7 @@ namespace TaskManagementAppWeb.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.errorMessage = "No se pudo agregar categoría";
+            ViewBag.errorMessage = "No se pudo agregar la prioridad";
 
             return View(prioridad);
         }
