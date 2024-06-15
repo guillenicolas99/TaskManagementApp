@@ -5,18 +5,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TaskManagementAppWeb.Controllers
 {
-    public class PrioridadController : Controller
+    public class UsuarioController : Controller
     {
         private readonly AppDbContext _context;
 
-        public PrioridadController(AppDbContext context)
+        public UsuarioController(AppDbContext context)
         {
             _context = context;
         }
         public async Task<IActionResult> Index()
         {
-            var listaPrioridades = await _context.Prioridades.ToListAsync();
-            return View(listaPrioridades);
+            var listaUsuarios = await _context.Usuarios.ToListAsync();
+            return View(listaUsuarios);
         }
 
         [HttpGet]
@@ -26,83 +26,82 @@ namespace TaskManagementAppWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Prioridad prioridad)
+        public IActionResult Create(Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                _context.Prioridades.Add(prioridad);
+                _context.Usuarios.Add(usuario);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.errorMessage = "No se pudo agregar la prioridad";
+            ViewBag.errorMessage = "No se pudo agregar el usuario";
 
-            return View(prioridad);
+            return View(usuario);
         }
 
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            Prioridad? prioridad = _context.Prioridades.FirstOrDefault(x => x.IdPrioridad == id);
-            if (prioridad == null)
+            Usuario? usuario = _context.Usuarios.FirstOrDefault(x => x.IdUsuario == id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            return View(prioridad);
+            return View(usuario);
         }
 
         [HttpPost]
-        public IActionResult Edit(Prioridad prioridad)
+        public IActionResult Edit(Usuario usuario)
         {
             if (ModelState.IsValid)
             {
-                _context.Prioridades.Update(prioridad);
+                _context.Usuarios.Update(usuario);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(prioridad);
+            return View(usuario);
         }
 
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            Prioridad? prioridad = _context.Prioridades.FirstOrDefault(x => x.IdPrioridad == id);
-            if (prioridad == null)
+            Usuario? usuario = _context.Usuarios.FirstOrDefault(x => x.IdUsuario == id);
+            if (usuario == null)
             {
                 return NotFound();
             }
 
-            return View(prioridad);
+            return View(usuario);
         }
 
         [HttpPost, ActionName("Delete")]
-        public IActionResult Delete(Prioridad prioridad)
+        public IActionResult Delete(Usuario usuario)
         {
-            if (prioridad != null)
+            if (usuario != null)
             {
                 // Verificar si el usuario está relacionada con alguna tarea
-                bool hasRelatedTareas = _context.Tareas.Any(x => x.IdPrioridad == prioridad.IdPrioridad);
+                bool hasRelatedTareas = _context.Tareas.Any(x => x.IdUsuarioPropietario == usuario.IdUsuario);
                 if (hasRelatedTareas)
                 {
                     // Agregar un mensaje de error y retornar a la vista de eliminación
-                    ViewBag.errorMessage = "No se puede eliminar esta prioridad porque está relacionado con una o más tareas";
-                    return View(prioridad);
+                    ViewBag.errorMessage = "No se puede eliminar el usuario porque está relacionado con una o más tareas";
+                    return View(usuario);
                 }
 
-                _context.Prioridades.Remove(prioridad);
+                _context.Usuarios.Remove(usuario);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(prioridad);
+            return View(usuario);
         }
 
-        private bool PrioridadExists(int id)
+        private bool UsuarioExists(int id)
         {
-            return _context.Prioridades.Any(e => e.IdPrioridad == id);
+            return _context.Usuarios.Any(e => e.IdUsuario == id);
         }
 
     }
 }
-
