@@ -1,0 +1,84 @@
+﻿@model CapaDominio.Entities.Tarea
+
+@{
+    ViewData["Title"] = "Editar Tarea";
+    var fechaEntrega = Model.FechaEstimadaEntrega.Date;
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form asp-action="Edit" method="post" class="shadow-lg card">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="card-header bg-dark">
+                <h2 class="card-title text-white">Editar Tarea</h2>
+            </div>
+            <div class="card-body">
+                <div class="form-group mb-3">
+                    <label class="control-label">Título</label>
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Descripción</label>
+                    <textarea class="form-control" asp-for="Description"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Fecha de entrega</label>
+                    <input asp-for="FechaEstimadaEntrega" class="form-control" min="@fechaEntrega" value="@fechaEntrega" />
+                    <span asp-validation-for="FechaEstimadaEntrega" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3 card p-3">
+                    <p class="m-0">Tarea Creada: <strong>@Model.FechaCreacion.ToLongDateString()</strong></p>
+                </div>
+
+                <div class="form-group mb-3 card p-3">
+                    <p class="m-0">Tarea Creada por: <strong>@ViewBag.nombreUsuarioPropietario</strong></p>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="control-label">Estado</label>
+                    <select asp-for="IdEstado" class="form-control" asp-items="ViewBag.Estados"></select>
+                    <span asp-validation-for="IdEstado" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Prioridad</label>
+                    <select asp-for="IdPrioridad" class="form-control" asp-items="@ViewBag.Prioridades"></select>
+                    <span asp-validation-for="IdPrioridad" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Categoría</label>
+                    <select asp-for="IdCategoria" class="form-control" asp-items="ViewBag.Categorias"></select>
+                    <span asp-validation-for="IdCategoria" class="text-danger"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <label class="control-label">Responsable</label>
+                    <select asp-for="IdUsuarioAsignado" class="form-control" asp-items="ViewBag.Usuarios"></select>
+                    <span asp-validation-for="IdUsuarioAsignado" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label class="control-label">Creado por:</label>
+                    <select asp-for="IdUsuarioPropietario" class="form-control" asp-items="ViewBag.Usuarios"></select>
+                    <span asp-validation-for="IdUsuarioPropietario" class="text-danger"></span>
+                </div>
+                @if (ViewBag.errorMessage != null)
+                {
+                    <div class="form-group my-3">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <strong>@ViewBag.errorMessage!</strong>.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="card-footer">
+                <div class="form-group mb-3">
+                    <button type="submit" class="btn btn-primary">Actualizar</button>
+                    <a asp-action="Index" class="btn btn-danger">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

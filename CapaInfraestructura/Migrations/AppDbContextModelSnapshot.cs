@@ -67,6 +67,35 @@ namespace CapaInfraestructura.Migrations
                         });
                 });
 
+            modelBuilder.Entity("CapaDominio.Entities.Comentario", b =>
+                {
+                    b.Property<int>("IdComentario")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdComentario"));
+
+                    b.Property<string>("ComentarioTxt")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaComentario")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("IdTarea")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdUsuario")
+                        .HasColumnType("int");
+
+                    b.HasKey("IdComentario");
+
+                    b.HasIndex("IdTarea");
+
+                    b.HasIndex("IdUsuario");
+
+                    b.ToTable("Comentarios");
+                });
+
             modelBuilder.Entity("CapaDominio.Entities.Estado", b =>
                 {
                     b.Property<int>("IdEstado")
@@ -231,6 +260,25 @@ namespace CapaInfraestructura.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("CapaDominio.Entities.Comentario", b =>
+                {
+                    b.HasOne("CapaDominio.Entities.Tarea", "Tarea")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("IdTarea")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CapaDominio.Entities.Usuario", "Usuario")
+                        .WithMany("Comentarios")
+                        .HasForeignKey("IdUsuario")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tarea");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("CapaDominio.Entities.Tarea", b =>
                 {
                     b.HasOne("CapaDominio.Entities.Categoria", "Categoria")
@@ -289,8 +337,15 @@ namespace CapaInfraestructura.Migrations
                     b.Navigation("Tareas");
                 });
 
+            modelBuilder.Entity("CapaDominio.Entities.Tarea", b =>
+                {
+                    b.Navigation("Comentarios");
+                });
+
             modelBuilder.Entity("CapaDominio.Entities.Usuario", b =>
                 {
+                    b.Navigation("Comentarios");
+
                     b.Navigation("TareasAsignado");
 
                     b.Navigation("TareasPropietario");

@@ -1,0 +1,62 @@
+﻿@model CapaDominio.Entities.Tarea
+
+@{
+    ViewData["Title"] = "Información de la tarea";
+
+}
+
+<section>
+    <div class="container">
+        <article class="card bg-dark text-white shadow m-auto" style="max-width: 550px;">
+            <header class="card-header border-bottom">
+                <h2 class="card-title text-uppercase">@ViewData["Title"]</h2>
+            </header>
+            <div class="card-body">
+                <div class="mb-3 border-bottom">
+                    <p><strong>Título:</strong> @Model.Title</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Descripción:</strong> @Model.Description</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Creado:</strong> @Model.FechaCreacion</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Entrega:</strong> @Model.FechaEstimadaEntrega</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Responsable:</strong> @Model.UsuarioAsignado?.Nombre</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Creada por:</strong> @Model.UsuarioPropietario?.Nombre</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Estado:</strong> @Model.Estado?.Nombre</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Prioridad:</strong> @Model.Prioridad?.Nombre</p>
+                </div>
+
+                <div class="mb-3 border-bottom">
+                    <p><strong>Categoría:</strong> @Model.Categoria?.Nombre</p>
+                </div>
+
+                <form>
+                    <div class="mb-3">
+                        <textarea class="form-control" placeholder="Agregar un comentario..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-primary" type="submit">Agregar</button>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </div>
+</section>

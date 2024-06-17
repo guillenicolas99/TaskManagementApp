@@ -30,6 +30,7 @@ namespace CapaDominio.Entities
 
         public ICollection<Tarea>? TareasPropietario { get; set; }
         public ICollection<Tarea>? TareasAsignado { get; set; }
+        public ICollection<Comentario>? Comentarios {  get; set; }
 
     }
 }

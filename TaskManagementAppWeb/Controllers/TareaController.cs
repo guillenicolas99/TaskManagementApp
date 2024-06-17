@@ -20,14 +20,35 @@ namespace TaskManagementAppWeb.Controllers
         [HttpGet]
         public async Task<IActionResult> Index ()
         {
-            var tareas = _context.Tareas
+            ViewData["IdEstado"] = new SelectList(_context.Estados, "IdEstado", "Nombre");
+            ViewData["IdPrioridad"] = new SelectList(_context.Prioridades, "IdPrioridad", "Nombre");
+            ViewData["IdCategoria"] = new SelectList(_context.Categorias, "IdCategoria", "Nombre");
+            ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "Nombre");
+            return View();
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetTareas()
+        {
+            var tareas = await _context.Tareas
                 .Include(t => t.Estado)
-                .Include(t => t.Prioridad)
+                .Include (t => t.Prioridad)
                 .Include(t => t.Categoria)
                 .Include(t => t.UsuarioPropietario)
-                .Include(t => t.UsuarioAsignado);
-            
-            return View(await tareas.ToListAsync());
+                .Include(t => t.UsuarioAsignado)
+                .Select(t => new
+                {
+                    t.IdTarea,
+                    t.Title,
+                    t.FechaCreacion,
+                    t.FechaEstimadaEntrega,
+                    Estado = t.Estado.Nombre,
+                    Prioridad = t.Prioridad.Nombre,
+                    Categoria = t.Categoria.Nombre,
+                    Propietario = t.UsuarioPropietario.Nombre,
+                    AsiggnadoA = t.UsuarioAsignado.Nombre
+                }).ToListAsync();
+            return Json(tareas);
         }
 
         [HttpGet]
@@ -59,6 +80,53 @@ namespace TaskManagementAppWeb.Controllers
             ViewData["IdCategoria"] = new SelectList(_context.Categorias, "IdCategoria", "Nombre", tarea.IdCategoria);
             ViewData["IdUsuario"] = new SelectList(_context.Usuarios, "IdUsuario", "Nombre", tarea.IdUsuarioAsignado);
             return View(tarea);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Tarea tarea = await _context.Tareas.FirstOrDefaultAsync(x => x.IdTarea == id);
+            if (tarea == null)
+            {
+                return NotFound();
+            }
+
+            ViewData["Estados"] = new SelectList(_context.Estados, "IdEstado", "Nombre", tarea.IdEstado);
+            ViewData["Prioridades"] = new SelectList(_context.Prioridades, "IdPrioridad", "Nombre", tarea.IdPrioridad);
+            ViewData["Categorias"] = new SelectList(_context.Categorias, "IdCategoria", "Nombre", tarea.IdCategoria);
+            ViewData["Usuarios"] = new SelectList(_context.Usuarios, "IdUsuario", "Nombre", tarea.IdUsuarioAsignado);
+            return View(tarea);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tareaDetails = await _context.Tareas
+                .Include(t => t.Estado)
+                .Include(t => t.Prioridad)
+                .Include(t => t.Categoria)
+                .Include(t => t.UsuarioPropietario)
+                .Include(t => t.UsuarioAsignado)
+                .Include(t => t.Comentarios)
+                .ThenInclude(c => c.Usuario)
+                .FirstOrDefaultAsync(m => m.IdTarea == id);
+
+            if (tareaDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(tareaDetails);
         }
     }
 }

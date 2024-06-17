@@ -20,6 +20,7 @@ namespace CapaInfraestructura.Context
         public DbSet<Prioridad> Prioridades { get; set; }
         public DbSet<Categoria> Categorias { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Comentario> Comentarios { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

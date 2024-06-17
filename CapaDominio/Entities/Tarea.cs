@@ -47,5 +47,7 @@ namespace CapaDominio.Entities
         public int IdUsuarioAsignado { get; set; }
         [ForeignKey("IdUsuarioAsignado")]
         public virtual Usuario? UsuarioAsignado { get; set; }
+
+        public virtual ICollection<Comentario>? Comentarios { get; set; }
     }
 }

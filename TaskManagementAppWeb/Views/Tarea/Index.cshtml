@@ -1,12 +1,15 @@
-﻿@model IEnumerable<CapaDominio.Entities.Tarea>
+﻿@model CapaDominio.Entities.Tarea
 
 @{
     ViewData["Title"] = "Lista de Tareas";
+    var minDate = DateTime.Now.ToString("yyyy-MM-dd 00:00");
 }
 
-<a asp-action="Create" class="btn btn-primary mb-3">Crear Tarea</a>
+<button class="btn btn-primary toggle-create">Crear Tarea</button>
+<button class="btn btn-secondary toggle-tasks">Mostrar Tareas</button>
 
-<div class="table-responsive shadow">
+
+<div class="table-responsive shadow d-none my-3" id="tareas-table">
     <table class="table table-hover text-center">
         <thead class="table-dark">
             <tr>
@@ -34,49 +37,78 @@
                 <th>Acciones</th>
             </tr>
         </thead>
-        <tbody class="">
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @item.Title
-                    </td>
-                    <td>
-                        @item.FechaCreacion
-                    </td>
-                    <td>
-                        @item.FechaEstimadaEntrega
-                    </td>
-                    <td>
-                        <span class="badge @item.Estado?.Nombre.Replace(" ", "-").ToLower()">
-                            @item.Estado?.Nombre
-                        </span>
-                    </td>
-                    <td>
-                        <span class="badge bg-@item.Prioridad?.Nombre.Replace(" ", "-").ToLower()">
-                            @item.Prioridad?.Nombre
-                        </span>
-                    </td>
-                    <td>
-                        @item.Categoria?.Nombre
-                    </td>
-                    <td>
-                        @item.UsuarioAsignado?.Nombre
-                    </td>
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.IdTarea" class="btn btn-warning">
-                            <i class="fa-solid fa-pen-to-square"></i>
-                        </a>
-                        <a asp-action="Details" asp-route-id="@item.IdTarea" class="btn btn-secondary">
-                            <i class="fa-solid fa-circle-info"></i>
-                        </a>
-                        <a asp-action="Delete" asp-route-id="@item.IdTarea" class="btn btn-danger">
-                            <i class="fa-solid fa-trash"></i>
-                        </a>
-                    </td>
-                </tr>
-            }
-        </tbody>
+        <tbody id="renderLst"></tbody>
     </table>
 </div>
 
+<!-- MODAL CREATE -->
+<div id="create-container">
+    <form asp-action="Create" method="post" class="shadow-lg card">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="card-header bg-dark">
+            <h2 class="card-title text-white">Nueva Tarea</h2>
+        </div>
+        <div class="card-body">
+            <div class="form-group mb-3">
+                <label class="control-label">Título</label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="control-label">Descripción</label>
+                <textarea class="form-control" asp-for="Description"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-3">
+                <label class="control-label">Fecha de entrega</label>
+                <input asp-for="FechaEstimadaEntrega" class="form-control" min="@minDate" value="@minDate" />
+                <span asp-validation-for="FechaEstimadaEntrega" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="control-label">Estado</label>
+                        <select asp-for="IdEstado" class="form-control" asp-items="ViewBag.IdEstado"></select>
+                        <span asp-validation-for="IdEstado" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Prioridad</label>
+                        <select asp-for="IdPrioridad" class="form-control" asp-items="@ViewBag.IdPrioridad"></select>
+                        <span asp-validation-for="IdPrioridad" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group mb-3">
+                        <label class="control-label">Categoría</label>
+                        <select asp-for="IdCategoria" class="form-control" asp-items="ViewBag.IdCategoria"></select>
+                        <span asp-validation-for="IdCategoria" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label class="control-label">Responsable</label>
+                        <select asp-for="IdUsuarioAsignado" class="form-control" asp-items="ViewBag.IdUsuario"></select>
+                        <span asp-validation-for="IdUsuarioAsignado" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            @if (ViewBag.errorMessage != null)
+            {
+                <div class="form-group my-3">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>@ViewBag.errorMessage!</strong>.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-footer">
+            <div class="form-group mb-3">
+                <button type="submit" class="btn btn-primary">Crear Tarea</button>
+                <button type="button" class="btn btn-danger close-create">Cancelar</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script type="text/javascript" src="~/js/Tarea.js"></script>
