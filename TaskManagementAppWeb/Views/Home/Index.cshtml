@@ -28,7 +28,8 @@
                 <div class="card-body">
                     <h3 class="card-title">Total Estados</h3>
                     <p class="card-text">@ViewBag.estados</p>
-                    <a class="btn @bgBtnClass">Agregar nuevo estado</a>
+                    <a class="btn @bgBtnClass" asp-action="Index" asp-controller="Estado">Lista</a>
+                    <a class="btn @bgBtnClass" asp-action="Create" asp-controller="Estado">Agregar nuevo estado</a>
                 </div>
             </article>
         </div>

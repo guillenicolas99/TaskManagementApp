@@ -1,25 +1,17 @@
-﻿@model CapaDominio.Entities.Usuario
+﻿@model CapaDominio.Entities.Categoria
 
 @{
-    ViewData["Title"] = "Agregar Usuario";
+    ViewData["Title"] = "Agregar Categoría";
 }
 
 <section class="py-5">
     <div class="card">
-        <form class="card-body" asp-action="Create" asp-controller="Usuario" method="post">
+        <form class="card-body" asp-action="Create" asp-controller="Estado" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="mb-3">
-                <label class="form-label">Nombre de usuario</label>
+                <label class="form-label">Nombre de Estado</label>
                 <input class="form-control" asp-for="Nombre" />
                 <span asp-validation-for="Nombre" class="text-danger"></span>
-
-                <label class="form-label">Correo Electrónico</label>
-                <input class="form-control" asp-for="Correo" />
-                <span asp-validation-for="Correo" class="text-danger"></span>
-
-                <label class="form-label">Contraseña</label>
-                <input type="password" class="form-control" asp-for="Password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
 
             @if (ViewBag.errorMessage != null)
